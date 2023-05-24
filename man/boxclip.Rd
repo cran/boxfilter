@@ -8,8 +8,8 @@ Filters noise from data (e.g. heartrates) using x for x-axis data and y for y-ax
 }
 
 \usage{
-boxclip(x, y, clipit=NULL, QI=NULL, width=NULL, height=NULL,
-            miny=10, plotit=TRUE, histo=FALSE)
+boxclip (x=NULL,y,clipit=NULL,QI=NULL,width=NULL, height=NULL,
+miny=min(y,na.rm=TRUE), maxy=max(y,na.rm=TRUE), plotit=TRUE, histo=FALSE)
 }
 
 \arguments{
@@ -33,7 +33,10 @@ boxclip(x, y, clipit=NULL, QI=NULL, width=NULL, height=NULL,
   Optional. The height of the box. If height is omitted it will be generated from floor(mean(y,na.rm=T)/4).
   }
   \item{miny}{
-  The minimum y-value expected. Defaults to 10. Anything below miny is discarded.
+  The minimum y-value expected. Anything below miny is discarded.
+  }
+   \item{maxy}{
+  The maximum y-value expected. Anything above maxy is discarded.
   }
   \item{plotit}{
   Optional.If TRUE show a graph of the original and filtered data.
@@ -74,20 +77,26 @@ clipview
 
 \examples{
 
-data("wb_month.RData")
-data ("ibex_hr.RData")
+data("wb_month")
+data("ibex_hr")
 
 x=wb_month$x
 y=wb_month$hr
 
 
-myclip=boxclip(x,y,clipit=0.25,width=15, histo=TRUE)
+myclip=boxclip(x,y, histo=TRUE)
 summary(myclip)
 
 r=seq(1,28400,by=4) %% to make the example faster
-myclip=boxclip(ibex_hr$Time[r],ibex_hr$Heartrate[r],0.45)
+myclip=boxclip(ibex_hr$Time[r],ibex_hr$Heartrate[r],0.65)
 summary(myclip)
-store(myclip)
+#store(myclip)
+
+
+data("sleepduration")
+Date=as.POSIXct(sleepduration$Date)
+Duration=as.numeric(sleepduration$Bedtime)
+boxclip(Date,Duration,miny=0)
 }
 
  \keyword{ "manip" }

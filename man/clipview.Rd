@@ -8,7 +8,9 @@ Get View Of Different clipit  Values
 Gives a view of the original data, a histogram of the neighbors, and results of four values of clipit. The cutoff-values clipit are determined  by a sequence of length .-
 }
 \usage{
-clipview(x, y, clipit = NULL,width = NULL, height = NULL, miny=10)
+clipview (x=NULL,y,clipit=NULL,width=NULL, height=NULL,
+miny=min(y,na.rm=TRUE), maxy=max(y,na.rm=TRUE),plotit=FALSE)
+
 }
 
 \arguments{
@@ -28,8 +30,14 @@ clipview(x, y, clipit = NULL,width = NULL, height = NULL, miny=10)
   Optional. The height of the box. If height is omitted it will be generated from floor(mean(y,na.rm=T)/4).
 }
   \item{miny}{
-  The minimum y-value expected. Defaults to 10. Anything below miny is discarded.
+  The minimum y-value expected. Anything below miny is discarded.
 }
+  \item{maxy}{
+  The minimum y-value expected. Anything above maxy is discarded.
+}
+  \item{plotit}{
+  Optional.If TRUE show a graph of the original and filtered data.
+  }
 }
 \details{
 Note that a sequence is required for clipit here, while a scalar is required in boxclip().
@@ -46,7 +54,7 @@ boxclip()
 }
 \examples{
 
-data("wb_year.RData")
+data("wb_year")
 
 
 r=seq(1,54179,by=5)   %% make example faster
@@ -54,7 +62,7 @@ r=seq(1,54179,by=5)   %% make example faster
 x=wb_year$x[r]
 y=wb_year$y[r]
 
-clipview(x,y,clipit=seq(0.2,0.5,0.1))
+clipview(x,y,clipit=seq(0.2,0.5,0.1), miny=10)
 
 }
 
